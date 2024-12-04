@@ -24,15 +24,11 @@ def get_resource_name(view):
     except AttributeError:
         try:
             # Check the meta class
-            resource_name = (
-                getattr(view, 'serializer_class')
-                .Meta.resource_name)
+            resource_name = getattr(view, 'serializer_class').Meta.resource_name
         except AttributeError:
             # Use the model
             try:
-                resource_name = (
-                    getattr(view, 'serializer_class')
-                    .Meta.model.__name__)
+                resource_name = getattr(view, 'serializer_class').Meta.model.__name__
             except AttributeError:
                 try:
                     resource_name = view.model.__name__
