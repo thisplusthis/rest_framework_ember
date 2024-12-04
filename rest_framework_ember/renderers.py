@@ -27,7 +27,10 @@ class JSONRenderer(renderers.JSONRenderer):
 
         if not resource_name:
             return super(JSONRenderer, self).render(
-                data, accepted_media_type, renderer_context)
+                data,
+                accepted_media_type,
+                renderer_context
+            )
 
         data = format_keys(data, 'camelize')
 
@@ -45,4 +48,7 @@ class JSONRenderer(renderers.JSONRenderer):
             data = {resource_name: data}
 
         return super(JSONRenderer, self).render(
-            data, accepted_media_type, renderer_context)
+            data,
+            accepted_media_type,
+            renderer_context
+        )

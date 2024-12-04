@@ -50,7 +50,8 @@ def format_keys(obj, format_type=None):
     Takes either a dict or list and returns it with camelized keys only if
     REST_EMBER_FORMAT_KEYS is set.
 
-    :format_type: Either 'camelize' or 'underscore'
+    @param obj: The object to be formatted
+    @param format_type: Either 'camelize' or 'underscore'
     """
     if (getattr(settings, 'REST_EMBER_FORMAT_KEYS', False)
             and format_type in ('camelize', 'underscore')):
@@ -59,12 +60,11 @@ def format_keys(obj, format_type=None):
             formatted = OrderedDict()
             for key, value in obj.items():
                 if format_type == 'camelize':
-                    formatted[inflection.camelize(key, False)]\
-                        = format_keys(value, format_type)
+                    formatted[inflection.camelize(key, False)] = format_keys(value, format_type)
                 elif format_type == 'underscore':
-                    formatted[inflection.underscore(key)]\
-                        = format_keys(value, format_type)
+                    formatted[inflection.underscore(key)] = format_keys(value, format_type)
             return formatted
+
         if isinstance(obj, list):
             return [format_keys(item, format_type) for item in obj]
         else:
