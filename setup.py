@@ -3,7 +3,7 @@ import os
 from setuptools import setup, find_packages
 
 def get_readme():
-    return open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
+    return open(os.path.join(os.path.dirname(__file__), 'README.md')).read()
 
 setup(
     name='rest_framework_ember',
