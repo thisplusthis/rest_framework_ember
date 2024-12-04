@@ -7,28 +7,17 @@ def get_readme():
 
 setup(
     name='rest_framework_ember',
-    version='1.0.3',
-    description="Make EmberJS and Django Rest Framework play nice together.",
+    version='1.0.4',
+    description="Working version of rest_framework_ember for Django 4.x+",
     long_description=get_readme(),
-    author="nGen Works",
-    author_email='tech@ngenworks.com',
-    url='https://github.com/ngenworks/rest_framework_ember',
+    author="james mcdonald",
+    author_email='thisplusthis@gmail.com',
+    url='https://github.com/thisplusthis/rest_framework_ember',
     license='BSD',
-    keywords="EmberJS Django REST",
+    keywords="",
     packages=find_packages(),
-    install_requires=['django', 'djangorestframework', 'inflection' ],
+    install_requires=['django', 'djangorestframework', 'inflection'],
     platforms=['any'],
-    classifiers=[
-        'Development Status :: 4 - Beta',
-        'Framework :: Django',
-        'Environment :: Web Environment',
-        'License :: OSI Approved :: BSD License',
-        'Intended Audience :: Developers',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 2.6',
-        'Programming Language :: Python :: 2.7',
-        'Topic :: Software Development :: Libraries :: Application Frameworks',
-        'Topic :: Software Development :: Libraries :: Python Modules',
-    ]
+    classifiers=[]
 )
 

@@ -1,12 +1,12 @@
-import copy
-import inflection
+# renderers.py
 
-from django.conf import settings
+"""
+    Renderers
+"""
 
 from rest_framework import renderers
-from rest_framework_ember.utils import get_resource_name
 
-from .utils import format_keys, format_resource_name
+from .utils import format_keys, format_resource_name, get_resource_name
 
 
 class JSONRenderer(renderers.JSONRenderer):
@@ -25,24 +25,24 @@ class JSONRenderer(renderers.JSONRenderer):
         view = renderer_context.get('view')
         resource_name = get_resource_name(view)
 
-        if resource_name == False:
+        if not resource_name:
             return super(JSONRenderer, self).render(
                 data, accepted_media_type, renderer_context)
 
-        data = format_keys(data, 'camelize') 
+        data = format_keys(data, 'camelize')
 
         try:
-            data_copy = copy.copy(data)
-            content = data_copy.pop('results')
+            content = data.pop('results')
             resource_name = format_resource_name(content, resource_name)
-            data = {resource_name : content, "meta" : data_copy}
+            data = {resource_name: content, "meta": data}
         except (TypeError, KeyError, AttributeError) as e:
-            
+
             # Default behavior
             if not resource_name == 'data':
                 format_keys(data, 'camelize')
                 resource_name = format_resource_name(data, resource_name)
 
-            data = {resource_name : data}
+            data = {resource_name: data}
+
         return super(JSONRenderer, self).render(
             data, accepted_media_type, renderer_context)

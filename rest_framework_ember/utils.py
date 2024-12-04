@@ -1,6 +1,17 @@
-import inflection
+# utils.py
 
+"""
+    Utils.
+"""
+
+import inflection
+import six
 from django.conf import settings
+
+try:
+    from rest_framework.compat import OrderedDict
+except ImportError:
+    OrderedDict = dict
 
 
 def get_resource_name(view):
@@ -13,21 +24,23 @@ def get_resource_name(view):
     except AttributeError:
         try:
             # Check the meta class
-            resource_name = getattr(view, 'serializer_class')\
-                .Meta.resource_name
+            resource_name = (
+                getattr(view, 'serializer_class')
+                .Meta.resource_name)
         except AttributeError:
             # Use the model
             try:
-                name = resource_name = getattr(view, 'serializer_class')\
-                    .Meta.model.__name__
+                resource_name = (
+                    getattr(view, 'serializer_class')
+                    .Meta.model.__name__)
             except AttributeError:
                 try:
-                    name = view.model.__name__
+                    resource_name = view.model.__name__
                 except AttributeError:
-                    name = view.__class__.__name__
+                    resource_name = view.__class__.__name__
 
-            name = format_keys(name)
-            resource_name = name[:1].lower() + name[1:]
+    if isinstance(resource_name, six.string_types):
+        return inflection.camelize(resource_name, False)
 
     return resource_name
 
@@ -39,11 +52,11 @@ def format_keys(obj, format_type=None):
 
     :format_type: Either 'camelize' or 'underscore'
     """
-    if getattr(settings, 'REST_EMBER_FORMAT_KEYS', False)\
-        and format_type in ('camelize', 'underscore'):
-        
+    if (getattr(settings, 'REST_EMBER_FORMAT_KEYS', False)
+            and format_type in ('camelize', 'underscore')):
+
         if isinstance(obj, dict):
-            formatted = {}
+            formatted = OrderedDict()
             for key, value in obj.items():
                 if format_type == 'camelize':
                     formatted[inflection.camelize(key, False)]\
@@ -64,7 +77,8 @@ def format_resource_name(obj, name):
     """
     Pluralize the resource name if more than one object in results.
     """
-    if getattr(settings, 'REST_EMBER_PLURALIZE_KEYS', False) and isinstance(obj, list):
-        return inflection.pluralize(name) if len(obj) > 1 else name
-    else:
-        return name
+    if (getattr(settings, 'REST_EMBER_PLURALIZE_KEYS', False)
+            and isinstance(obj, list)):
+
+        return inflection.pluralize(name)
+    return name
